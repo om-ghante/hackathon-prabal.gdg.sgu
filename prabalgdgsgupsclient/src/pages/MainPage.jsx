@@ -5,6 +5,8 @@ import {
   Sword, Shield, ScrollText, Castle, Skull, Hourglass, 
   BookOpen, Wand2, Scroll, Crown, TowerControl 
 } from 'lucide-react';
+import { motion } from 'framer-motion';
+import Prismas from '../assets/Prismas.svg'
 
 const MainPage = () => {
   const [allProblems, setAllProblems] = useState([]);
@@ -247,19 +249,25 @@ const MainPage = () => {
       </main>
 
       {/* Footer */}
-      <footer className="container px-4 sm:px-6 py-8 sm:py-12 mx-auto mt-8 sm:mt-12 text-center border-t border-blue-800/30">
-        <div className="mb-4 sm:mb-6 flex justify-center space-x-4 sm:space-x-6">
-          <Shield className="text-blue-500 w-6 h-6 sm:w-8 sm:h-8 animate-pulse" />
-          <Sword className="text-blue-500 w-6 h-6 sm:w-8 sm:h-8 animate-pulse delay-75" />
-          <Scroll className="text-blue-500 w-6 h-6 sm:w-8 sm:h-8 animate-pulse delay-150" />
+      <motion.footer 
+        className="absolute bottom-2 w-full flex justify-center items-center z-20"
+        initial={{ y: 50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, delay: 1 }}
+      >
+        <a href="https://prismas.in/" target='_blank'>
+        <div className="flex flex-col items-center">
+          <div className="text-white font-bold text-sm">Developed By</div>
+          <motion.div 
+            className="flex items-center"
+            whileHover={{ scale: 1.1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <img src={Prismas} alt="Company Logo" className="h-25" />
+          </motion.div>
         </div>
-        <p className="text-sm sm:text-base text-gray-400 italic">
-          "The only way to learn is to challenge yourself"
-        </p>
-        <div className="mt-2 sm:mt-4 text-xs sm:text-sm text-blue-500/70">
-          © {new Date().getFullYear()} Code Challenge Platform
-        </div>
-      </footer>
+        </a>
+      </motion.footer>
     </div>
   );
 };
