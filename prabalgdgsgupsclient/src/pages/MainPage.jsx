@@ -20,7 +20,7 @@ const MainPage = () => {
     'AI': { 
       name: 'AI/ML', 
       icon: <BookOpen size={18} />,
-      category: 'Machine Learning',
+      category: 'Artificial Intelligence & Machine Learning',
       bgGradient: 'from-purple-900 via-blue-800 to-indigo-900',
       borderColor: 'border-indigo-500',
       textColor: 'text-indigo-300'
@@ -28,7 +28,7 @@ const MainPage = () => {
     'Web Development': { 
       name: 'Web Dev', 
       icon: <Castle size={18} />,
-      category: 'Frontend/Backend',
+      category: 'Web Application Developement',
       bgGradient: 'from-blue-900 via-cyan-800 to-sky-900',
       borderColor: 'border-cyan-500',
       textColor: 'text-cyan-300'
@@ -36,15 +36,15 @@ const MainPage = () => {
     'Blockchain': { 
       name: 'Blockchain', 
       icon: <Scroll size={18} />,
-      category: 'Decentralized Tech',
+      category: 'Blockchain Development',
       bgGradient: 'from-emerald-900 via-teal-800 to-green-900',
       borderColor: 'border-emerald-500',
       textColor: 'text-emerald-300'
     },
-    'default': { 
-      name: 'General', 
+    'App Development': { 
+      name: 'App Dev', 
       icon: <Sword size={18} />,
-      category: 'Miscellaneous',
+      category: 'Mobile App Development',
       bgGradient: 'from-gray-800 via-gray-700 to-gray-800',
       borderColor: 'border-gray-500',
       textColor: 'text-gray-300'
@@ -122,7 +122,7 @@ const MainPage = () => {
       <header className="w-full flex flex-col items-center">
   
   {/* Slogan Section - appears below the image */}
-  <div className="w-full bg-gray-900 text-white py-4 px-4 text-center">
+  <div className="w-full bg-gray-900 text-white py-4 px-4 mb-4 text-center">
     <h1 className="text-xl font-bold mb-1">PRABAL</h1>
     <p className="text-sm italic">Hack it, Till you make it!</p>
   </div>
@@ -181,21 +181,13 @@ const MainPage = () => {
                           <div className="flex items-center text-xs text-white/70">
                             <Hourglass className="w-4 h-4 mr-1" />
                             <span>
-                              Posted: {problem.revealDate.toDate().toLocaleDateString('en-US', {
+                              Posted : {problem.revealDate.toDate().toLocaleDateString('en-US', {
                                 month: 'short',
                                 day: 'numeric',
                                 hour: '2-digit',
                                 minute: '2-digit'
                               })}
                             </span>
-                          </div>
-                          <div className="flex space-x-2">
-                            <button className="px-3 py-1 text-xs font-medium bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors">
-                              View Details
-                            </button>
-                            <button className="px-3 py-1 text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white rounded-full transition-colors">
-                              Accept Challenge
-                            </button>
                           </div>
                         </div>
                       </div>
