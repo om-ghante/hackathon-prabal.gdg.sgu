@@ -218,15 +218,19 @@ const Dashboard = () => {
                 
                 <div>
                   <label htmlFor="domain" className="block mb-2 text-sm font-medium text-gray-700">Domain</label>
-                  <input
-                    type="text"
+                  <select
                     id="domain"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    placeholder="e.g. AI, Web Development, Blockchain."
                     className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                     required
-                  />
+                  >
+                    <option value="">Select a domain...</option>
+                    <option value="AI & ML">AI & ML</option>
+                    <option value="Web Development">Web Development</option>
+                    <option value="Blockchain">Blockchain</option>
+                    <option value="App Development">App Development</option>
+                  </select>
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4">

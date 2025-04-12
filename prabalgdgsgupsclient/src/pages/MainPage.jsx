@@ -17,7 +17,7 @@ const MainPage = () => {
 
   // Enhanced domain mapping with better visual cues
   const domainMap = {
-    'AI': { 
+    'AI & ML': { 
       name: 'AI/ML', 
       icon: <BookOpen size={18} />,
       category: 'Artificial Intelligence & Machine Learning',
