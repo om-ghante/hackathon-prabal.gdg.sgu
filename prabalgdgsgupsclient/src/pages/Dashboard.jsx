@@ -151,7 +151,7 @@ const Dashboard = () => {
       <header className="bg-gradient-to-r from-indigo-600 to-indigo-800 shadow-lg">
         <div className="container flex items-center justify-between px-6 py-4 mx-auto">
           <div>
-            <h1 className="text-2xl font-bold text-white">Hackathon Dashboard</h1>
+            <h1 className="text-2xl font-bold text-white">Prabal Hackathon Dashboard</h1>
             <p className="text-indigo-100">Manage problem statements</p>
           </div>
           <button
@@ -223,7 +223,7 @@ const Dashboard = () => {
                     id="domain"
                     value={domain}
                     onChange={(e) => setDomain(e.target.value)}
-                    placeholder="e.g. AI, Web Development, IoT"
+                    placeholder="e.g. AI, Web Development, Blockchain."
                     className="block w-full px-3 py-2 text-sm border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                     required
                   />
