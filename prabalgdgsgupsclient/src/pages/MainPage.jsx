@@ -17,6 +17,14 @@ const MainPage = () => {
 
   // Enhanced domain mapping with better visual cues
   const domainMap = {
+    'all': {
+      name: 'All',
+      icon: <BookOpen size={18} />,
+      category: 'All Domains',
+      bgGradient: 'from-purple-900 via-blue-800 to-indigo-900',
+      borderColor: 'border-indigo-500',
+      textColor: 'text-indigo-300'
+    },
     'AI & ML': { 
       name: 'AI/ML', 
       icon: <BookOpen size={18} />,
@@ -52,7 +60,7 @@ const MainPage = () => {
   };
 
   const getDomainInfo = (domain) => {
-    return domainMap[domain] || domainMap['default'];
+    return domainMap[domain] || domainMap['all'];
   };
 
   // Update current time every second
@@ -78,7 +86,8 @@ const MainPage = () => {
       });
 
       setAllProblems(statements);
-      setDomains(Array.from(domainsSet));
+      // Ensure we have all predefined domains even if no problems exist yet
+      setDomains(['all', 'AI & ML', 'Web Development', 'Blockchain', 'App Development']);
       setLoading(false);
     });
 
@@ -119,14 +128,55 @@ const MainPage = () => {
   return (
     <div className="min-h-screen bg-gray-900 bg-gradient-to-br from-black via-blue-900/20 to-black">
       <main className="container px-4 sm:px-6 py-6 sm:py-8 mx-auto">
-      <header className="w-full flex flex-col items-center">
-  
-  {/* Slogan Section - appears below the image */}
-  <div className="w-full bg-gray-900 text-white py-4 px-4 mb-4 text-center">
-    <h1 className="text-xl font-bold mb-1">PRABAL</h1>
-    <p className="text-sm italic">Hack it, Till you make it!</p>
-  </div>
-</header>
+        <header className="w-full flex flex-col items-center">
+          {/* Slogan Section - appears below the image */}
+          <div className="w-full bg-gray-900 text-white py-4 px-4 mb-4 text-center">
+            <h1 className="text-xl font-bold mb-1">PRABAL</h1>
+            <p className="text-sm italic">Hack it, Till you make it!</p>
+          </div>
+        </header>
+
+        {/* Domain Tabs */}
+        <div className="flex flex-wrap gap-2 mb-6">
+          {['all', 'AI & ML', 'Web Development', 'Blockchain', 'App Development'].map((domain) => {
+            const domainInfo = getDomainInfo(domain);
+            return (
+              <button
+                key={domain}
+                onClick={() => setSelectedDomain(domain)}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+                  selectedDomain === domain
+                    ? `bg-gradient-to-r ${domainInfo.bgGradient} text-white shadow-md`
+                    : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+                }`}
+              >
+                <div className="flex items-center">
+                  <span className="mr-2">{domainInfo.icon}</span>
+                  {domainInfo.name}
+                </div>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Search Bar */}
+        <div className="mb-6">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search problem statements..."
+              className="w-full bg-gray-800 border border-gray-700 rounded-lg px-4 py-2 pl-10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <div className="absolute left-3 top-2.5 text-gray-400">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
         {/* Loading State */}
         {loading ? (
           <div className="flex flex-col items-center justify-center h-64 sm:h-80 p-6 bg-black/30 rounded-xl border border-blue-800/50 shadow-lg">
@@ -144,63 +194,64 @@ const MainPage = () => {
             {filteredProblems.length === 0 ? (
               renderEmptyState()
             ) : (
-                          <div className="space-y-6 w-full">
-              <AnimatePresence>
-                {filteredProblems.map((problem) => {
-                  const domainInfo = getDomainInfo(problem.domain);
-                  return (
-                    <motion.div
-                      key={problem.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className={`w-full flex flex-col rounded-xl border ${domainInfo.borderColor} overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-gray-800`}
-                    >
-                      <div className="relative h-full flex flex-col p-6">
-                        {/* Domain Header */}
-                        <div className="flex items-center mb-4">
-                          <div className={`p-2 rounded-lg ${domainInfo.textColor}`}>
-                            {domainInfo.icon}
+              <div className="space-y-6 w-full">
+                <AnimatePresence>
+                  {filteredProblems.map((problem) => {
+                    const domainInfo = getDomainInfo(problem.domain);
+                    return (
+                      <motion.div
+                        key={problem.id}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className={`w-full flex flex-col rounded-xl border ${domainInfo.borderColor} overflow-hidden shadow-lg hover:shadow-xl transition-shadow bg-gray-800`}
+                      >
+                        <div className="relative h-full flex flex-col p-6">
+                          {/* Domain Header */}
+                          <div className="flex items-center mb-4">
+                            <div className={`p-2 rounded-lg ${domainInfo.textColor}`}>
+                              {domainInfo.icon}
+                            </div>
+                            <div className="ml-3">
+                              <h3 className="text-sm font-semibold text-white/80">{domainInfo.category}</h3>
+                              <h2 className="text-xl font-bold text-white">{problem.title}</h2>
+                            </div>
                           </div>
-                          <div className="ml-3">
-                            <h3 className="text-sm font-semibold text-white/80">{domainInfo.category}</h3>
-                            <h2 className="text-xl font-bold text-white">{problem.title}</h2>
+              
+                          {/* Problem Description */}
+                          <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar mb-4">
+                            <p className="text-gray-200 text-sm leading-relaxed">
+                              {problem.description}
+                            </p>
+                          </div>
+              
+                          {/* Footer */}
+                          <div className="mt-auto pt-3 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
+                            <div className="flex items-center text-xs text-white/70">
+                              <Hourglass className="w-4 h-4 mr-1" />
+                              <span>
+                                Posted : {problem.revealDate.toDate().toLocaleDateString('en-US', {
+                                  month: 'short',
+                                  day: 'numeric',
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </span>
+                            </div>
                           </div>
                         </div>
-            
-                        {/* Problem Description */}
-                        <div className="flex-grow overflow-y-auto pr-2 custom-scrollbar mb-4">
-                          <p className="text-gray-200 text-sm leading-relaxed">
-                            {problem.description}
-                          </p>
-                        </div>
-            
-                        {/* Footer */}
-                        <div className="mt-auto pt-3 border-t border-white/10 flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
-                          <div className="flex items-center text-xs text-white/70">
-                            <Hourglass className="w-4 h-4 mr-1" />
-                            <span>
-                              Posted : {problem.revealDate.toDate().toLocaleDateString('en-US', {
-                                month: 'short',
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                              })}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            
-              {/* Results Count */}
-              <div className="text-sm text-gray-400">
-                Showing {filteredProblems.length} of {visibleProblems.length} challenges
+                      </motion.div>
+                    );
+                  })}
+                </AnimatePresence>
+              
+                {/* Results Count */}
+                <div className="text-sm text-gray-400">
+                  Showing {filteredProblems.length} of {visibleProblems.length} challenges
+                  {selectedDomain !== 'all' && ` in ${selectedDomain}`}
+                </div>
               </div>
-            </div>
             )}
           </>
         )}
