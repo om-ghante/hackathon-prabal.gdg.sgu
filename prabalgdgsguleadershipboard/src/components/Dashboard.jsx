@@ -1,5 +1,15 @@
 import { useState, useEffect } from 'react';
-import { collection, addDoc, updateDoc, doc, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { 
+  collection, 
+  addDoc, 
+  updateDoc, 
+  doc, 
+  onSnapshot, 
+  query, 
+  orderBy,
+  increment,    // Added increment
+  deleteDoc     // Added deleteDoc
+} from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../context/useAuth';
 import { useNavigate } from 'react-router-dom';
@@ -27,6 +37,7 @@ const Dashboard = () => {
   const [message, setMessage] = useState({ type: '', text: '' });
   const [teams, setTeams] = useState([]);
   const [expandedTeam, setExpandedTeam] = useState(null);
+  const [pointsInput, setPointsInput] = useState('');
   
   const { currentUser, logout } = useAuth();
   const navigate = useNavigate();
@@ -80,13 +91,19 @@ const Dashboard = () => {
 
 
   const handlePointsChange = async (teamId, operation) => {
+    if (!pointsInput || isNaN(pointsInput) || pointsInput <= 0) {
+      setMessage({ type: 'error', text: 'Please enter a valid positive number' });
+      return;
+    }
+
     const teamRef = doc(db, "teams", teamId);
     try {
       await updateDoc(teamRef, {
-        points: operation === 'add' ? 
-          increment(100) : 
-          decrement(100)
+        points: operation === 'add' 
+          ? increment(Number(pointsInput))
+          : increment(-Number(pointsInput))
       });
+      setPointsInput(''); // Clear input after successful operation
     } catch (error) {
       console.error("Error updating points:", error);
       setMessage({ type: 'error', text: 'Failed to update points' });
@@ -287,8 +304,9 @@ const Dashboard = () => {
                               </div>
                             </div>
                           </div>
-                          <div className="flex items-center gap-4">
-                            <div className="flex items-center gap-2">
+                          <span className='text-2xl text-green-700'>{team.points}</span>
+                            <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-2">
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -296,11 +314,16 @@ const Dashboard = () => {
                                 }}
                                 className="px-3 py-1 text-red-600 bg-red-50 rounded-md hover:bg-red-100"
                               >
-                                -100
+                                -
                               </button>
-                              <span className="px-3 py-1 bg-gray-100 rounded-md">
-                                {team.points}
-                              </span>
+                              <input
+                                type="number"
+                                value={pointsInput}
+                                onChange={(e) => setPointsInput(e.target.value)}
+                                className="w-50 px-2 py-1 text-center border rounded-md"
+                                placeholder="Points"
+                                min="1"
+                              />
                               <button 
                                 onClick={(e) => {
                                   e.stopPropagation();
@@ -308,7 +331,7 @@ const Dashboard = () => {
                                 }}
                                 className="px-3 py-1 text-green-600 bg-green-50 rounded-md hover:bg-green-100"
                               >
-                                +100
+                                +
                               </button>
                             </div>
                             <button 
